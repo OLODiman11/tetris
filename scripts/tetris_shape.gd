@@ -13,26 +13,29 @@ var type: Type
 
 var _shape: Array[Array]
 
-func _init(type: Type):
-	self.type = type
-	match type:
+func _init(shape_type: Type):
+	self.type = shape_type
+	match shape_type:
 		Type.I_Block:
-			_shape = get_i_block_shape()
+			_shape = TetrisShape.get_i_block_shape()
 		Type.J_Block:
-			_shape = get_j_block_shape()
+			_shape = TetrisShape.get_j_block_shape()
 		Type.L_Block:
-			_shape = get_l_block_shape()
+			_shape = TetrisShape.get_l_block_shape()
 		Type.O_Block:
-			_shape = get_o_block_shape()
+			_shape = TetrisShape.get_o_block_shape()
 		Type.S_Block:
-			_shape = get_s_block_shape()
+			_shape = TetrisShape.get_s_block_shape()
 		Type.T_Block:
-			_shape = get_t_block_shape()
+			_shape = TetrisShape.get_t_block_shape()
 		Type.Z_Block:
-			_shape = get_z_block_shape()
+			_shape = TetrisShape.get_z_block_shape()
 			
 func rotate():
-	var n = _shape.size()
+	_shape = get_rotation()
+	
+func get_rotation() -> Array[Array]:
+	var n = get_size()
 	var rotated_shape: Array[Array] = []
 	for i in range(n):
 		var line = []
@@ -43,11 +46,14 @@ func rotate():
 	for row in range(n):
 		for col in range(n):
 			rotated_shape[col][n-row-1] = _shape[row][col]
-	
-	_shape = rotated_shape
+			
+	return rotated_shape
 
 func get_shape():
-	return _shape	
+	return _shape.duplicate(true)	
+	
+func get_size():
+	return _shape.size()
 	
 static func get_i_block_shape() -> Array[Array]:
 	return [ 

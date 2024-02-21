@@ -37,11 +37,12 @@ var test_rotate_params = [
 
 func test_rotate(params=use_parameters(test_rotate_params)):
 	var shape = TetrisShape.new(params[0])
+
+	assert_eq_deep(shape.get_rotation(), params[1])
 	shape.rotate()
-	assert_eq_deep(shape.get_shape(), params[1])
 	
+	assert_eq_deep(shape.get_rotation(), params[2])
 	shape.rotate()
-	assert_eq_deep(shape.get_shape(), params[2])
 	
+	assert_eq_deep(shape.get_rotation(), params[3])
 	shape.rotate()
-	assert_eq_deep(shape.get_shape(), params[3])
