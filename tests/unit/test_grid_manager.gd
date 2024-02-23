@@ -70,59 +70,41 @@ var test_can_fit_params = [
 		[1, 0, 1, 1],
 		[1, 0, 1, 1],
 		[1, 0, 0, 1],
-		[1, 1, 1, 1]], [
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1]]],
+		[1, 1, 1, 1]]],
 	[true, 1, 1,[
 		[1, 1, 1, 1],
 		[1, 1, 0, 1],
 		[1, 1, 0, 1],
-		[1, 1, 0, 0]], [
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1]]],
+		[1, 1, 0, 0]]],
 	[true, 0, -1,[
 		[0, 1, 1, 1],
 		[0, 1, 1, 1],
 		[0, 0, 1, 1],
-		[1, 1, 1, 1]], [
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1]]],
+		[1, 1, 1, 1]]],
 	[false, 1, 2,[
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
-		[0, 0, 0, 0]], [
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1]]],
+		[0, 0, 0, 0]]],
 	[false, 0, 0,[
 		[0, 0, 0, 0],
 		[0, 1, 0, 0],
 		[0, 0, 0, 0],
-		[0, 0, 0, 0]], [
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1]]]
+		[0, 0, 0, 0]]]
 ]
 
 func test_can_fit(params=use_parameters(test_can_fit_params)):
-	var width = 4
-	var height = 4
+	var grid_manager = _prepare_grid(4, 4, params, TetrisShape.Type.L_Block)
+	var shape: Array[Array] = [
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 1]]
 	var expected: bool = params[0]
 	var row: int = params[1]
 	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
-	var shape: Array[Array] = []
-	for r in range(params[4].size()):
-		shape.append(params[4][r])
-	var grid_manager = GridManager.new(width, height)
-	grid_manager._grid = grid
+	
 	var can_fit = grid_manager.can_fit(shape, row, col)
+
 	assert_eq(can_fit, expected)
 
 var test_try_rotate_shape_params = [
@@ -141,18 +123,11 @@ var test_try_rotate_shape_params = [
 ]
 
 func test_try_rotate_shape(params=use_parameters(test_try_rotate_shape_params)):
-	var width = 3
-	var height = 3
 	var expected: bool = params[0]
-	var row: int = params[1]
-	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
-	var grid_manager = GridManager.new(width, height)
-	grid_manager._grid = grid
-	grid_manager.add_new_shape(TetrisShape.Type.S_Block, row, col)
+	var grid_manager = _prepare_grid(3, 3, params, TetrisShape.Type.S_Block)
+	
 	var can_rotate = grid_manager.try_rotate_shape()
+	
 	assert_eq(can_rotate, expected)
 	
 var test_try_move_up_params = [
@@ -171,18 +146,11 @@ var test_try_move_up_params = [
 ]
 
 func test_try_move_up(params=use_parameters(test_try_move_up_params)):
-	var width = 3
-	var height = 3
 	var expected: bool = params[0]
-	var row: int = params[1]
-	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
-	var grid_manager = GridManager.new(width, height)
-	grid_manager._grid = grid
-	grid_manager.add_new_shape(TetrisShape.Type.S_Block, row, col)
+	var grid_manager = _prepare_grid(3, 3, params, TetrisShape.Type.S_Block)
+	
 	var can_move = grid_manager.try_move_up()
+	
 	assert_eq(can_move, expected)
 	
 var test_try_move_down_params = [
@@ -201,18 +169,11 @@ var test_try_move_down_params = [
 ]
 
 func test_try_move_down(params=use_parameters(test_try_move_down_params)):
-	var width = 3
-	var height = 3
 	var expected: bool = params[0]
-	var row: int = params[1]
-	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
-	var grid_manager = GridManager.new(width, height)
-	grid_manager.add_new_shape(TetrisShape.Type.S_Block, row, col)
-	grid_manager._grid = grid
+	var grid_manager = _prepare_grid(3, 3, params, TetrisShape.Type.S_Block)
+	
 	var can_move = grid_manager.try_move_down()
+	
 	assert_eq(can_move, expected)
 
 var test_try_move_right_params = [
@@ -231,18 +192,11 @@ var test_try_move_right_params = [
 ]
 
 func test_try_move_right(params=use_parameters(test_try_move_right_params)):
-	var width = 4
-	var height = 3
 	var expected: bool = params[0]
-	var row: int = params[1]
-	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
-	var grid_manager = GridManager.new(width, height)
-	grid_manager.add_new_shape(TetrisShape.Type.J_Block, row, col)
-	grid_manager._grid = grid
+	var grid_manager = _prepare_grid(4, 3, params, TetrisShape.Type.J_Block)
+	
 	var can_move = grid_manager.try_move_right()
+	
 	assert_eq(can_move, expected)
 	
 var test_try_move_left_params = [
@@ -261,16 +215,29 @@ var test_try_move_left_params = [
 ]
 
 func test_try_move_left(params=use_parameters(test_try_move_left_params)):
-	var width = 4
-	var height = 3
+	var expected: bool = params[0]
+	var grid_manager = _prepare_grid(4, 3, params, TetrisShape.Type.J_Block)
+	
+	var can_move = grid_manager.try_move_left()
+	
+	assert_eq(can_move, expected)
+	
+func _prepare_grid(width: int, height: int, params: Array, shape_type: TetrisShape.Type) -> GridManager:
 	var expected: bool = params[0]
 	var row: int = params[1]
 	var col: int = params[2]
-	var grid: Array[Array] = []
-	for r in range(params[3].size()):
-		grid.append(params[3][r])
+	var grid: Array[Array] = _to_Array_of_Array(params[3])
+	
 	var grid_manager = GridManager.new(width, height)
-	grid_manager.add_new_shape(TetrisShape.Type.J_Block, row, col)
+	grid_manager.add_new_shape(shape_type, row, col)
 	grid_manager._grid = grid
-	var can_move = grid_manager.try_move_left()
-	assert_eq(can_move, expected)
+	
+	return grid_manager
+	
+func _to_Array_of_Array(array):
+	var result: Array[Array] = []
+	for row in range(array.size()):
+		result.append([])
+		for col in range(array[0].size()):
+			result[row].append(array[row][col])
+	return result
