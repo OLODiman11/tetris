@@ -9,13 +9,9 @@ var _grid: Array[Array]
 func _init(width: int, height: int):
 	_grid = []
 	for i in range(height):
-		var row = []
-		row.resize(width)
-		row.fill(0)
-		_grid.append(row)
+		_grid.append(_get_empty_row(width))
 		
-func add_new_shape(type: TetrisShape.Type, row, col):
-	_grid = get_whole_grid()
+func try_add_new_shape(type: TetrisShape.Type, row, col):
 	current_shape = TetrisShape.new(type)
 	s_row = clamp(row, 0, get_height() - current_shape.get_size())
 	s_col = clamp(col, 0, get_width() - current_shape.get_size())
@@ -32,14 +28,25 @@ func add_new_shape(type: TetrisShape.Type, row, col):
 	if col >= get_width():
 		while try_move_right():
 			pass
+			
+	return can_fit(current_shape.get_shape(), s_row, s_col)
 	
 func get_whole_grid() -> Array[Array]:
 	var whole_grid = get_grid()
 	if current_shape == null:
 		return whole_grid
+		
 	var n = current_shape.get_size()
 	for col in range(n):
+		var out_of_bounds := col + s_col < 0 || col + s_col >= get_width()
+		if out_of_bounds:
+			continue
 		for row in range(n):
+			if current_shape.get_shape()[row][col] == 0:
+				continue
+			out_of_bounds = row + s_row < 0 || row + s_row >= get_height()
+			if out_of_bounds:
+				continue
 			whole_grid[row+s_row][col+s_col] = current_shape.get_shape()[row][col]
 	return whole_grid
 	
@@ -64,35 +71,80 @@ func can_fit(shape: Array[Array], row: int, col: int) -> bool:
 				
 	return true
 	
+func can_rotate_shape() -> bool:
+	return can_fit(current_shape.get_rotation(), s_row, s_col)
+	
 func try_rotate_shape() -> bool:
-	if can_fit(current_shape.get_rotation(), s_row, s_col):
+	if can_rotate_shape():
 		current_shape.rotate()
 		return true
 	return false
 	
+func can_move_up() -> bool:
+	return can_fit(current_shape.get_shape(), s_row - 1, s_col)
+	
 func try_move_up() -> bool:
-	if can_fit(current_shape.get_shape(), s_row - 1, s_col):
+	if can_move_up():
 		s_row -= 1
 		return true
 	return false
 	
+func can_move_down() -> bool:
+	return can_fit(current_shape.get_shape(), s_row + 1, s_col)
+	
 func try_move_down() -> bool:
-	if can_fit(current_shape.get_shape(), s_row + 1, s_col):
+	if can_move_down():
 		s_row += 1
 		return true
 	return false
 	
+func can_move_left() -> bool:
+	return can_fit(current_shape.get_shape(), s_row, s_col - 1)
+	
 func try_move_left() -> bool:
-	if can_fit(current_shape.get_shape(), s_row, s_col - 1):
+	if can_move_left():
 		s_col -= 1
 		return true
 	return false
 	
+func can_move_right() -> bool:
+	return can_fit(current_shape.get_shape(), s_row, s_col + 1)
+	
 func try_move_right() -> bool:
-	if can_fit(current_shape.get_shape(), s_row, s_col + 1):
+	if can_move_right():
 		s_col += 1
 		return true
 	return false
+	
+func stick_shape_to_grid():
+	_grid = get_whole_grid()
+	current_shape = null
+	
+func clean_up_filled_rows():
+	var filled_rows = get_filled_rows()
+	var new_grid: Array[Array] = []
+	
+	for i in range(filled_rows.size()):
+		new_grid.append(_get_empty_row(get_width()))
+	
+	for row in range(get_height()):
+		if row not in filled_rows:
+			new_grid.append(_grid[row])
+	
+	_grid = new_grid
+	
+func get_filled_rows() -> Array[int]:
+	var filled_rows: Array[int] = []
+	for row in range(get_height()):
+		if row_is_filled(row):
+			filled_rows.append(row)
+	return filled_rows
+				
+func row_is_filled(row: int) -> bool:
+	for col in range(get_width()):
+		if _grid[row][col] == 0:
+			return false
+	return true
 	
 func get_width() -> int:
 	return _grid[0].size()
@@ -102,3 +154,9 @@ func get_height() -> int:
 	
 func get_grid() -> Array[Array]:
 	return _grid.duplicate(true)
+
+func _get_empty_row(width: int) -> Array[int]:
+	var row: Array[int] = []
+	row.resize(width)
+	row.fill(0)
+	return row

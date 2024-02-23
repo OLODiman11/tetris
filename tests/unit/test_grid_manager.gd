@@ -1,6 +1,6 @@
 extends GutTest
 
-var test_add_new_shape_params = [
+var test_try_add_new_shape_params = [
 	[2, 3, [
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,11 +58,11 @@ var test_add_new_shape_params = [
 	[0, 0, 0, 0, 7, 7, 0, 0, 0, 0]]]
 ]
 
-func test_add_new_shape(params=use_parameters(test_add_new_shape_params)):
+func test_try_add_new_shape(params=use_parameters(test_try_add_new_shape_params)):
 	var width = 10
 	var height = 10
 	var grid_manager = GridManager.new(width, height)
-	grid_manager.add_new_shape(TetrisShape.Type.Z_Block, params[0], params[1])
+	grid_manager.try_add_new_shape(TetrisShape.Type.Z_Block, params[0], params[1])
 	assert_eq_deep(grid_manager.get_whole_grid(), params[2])
 
 var test_can_fit_params = [
@@ -222,6 +222,51 @@ func test_try_move_left(params=use_parameters(test_try_move_left_params)):
 	
 	assert_eq(can_move, expected)
 	
+var test_stick_shape_to_grid_params = [
+	[0, 0, [
+		[0, 6, 0, 0],
+		[6, 6, 6, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
+	]],
+	[1, 1, [
+		[0, 0, 0, 0],
+		[0, 0, 6, 0],
+		[0, 6, 6, 6],
+		[0, 0, 0, 0]
+	]]
+]
+	
+func test_stick_shape_to_grid(params=use_parameters(test_stick_shape_to_grid_params)):
+	var grid_manager = GridManager.new(4, 4)
+	var row: int = params[0]
+	var col: int = params[1]
+	var expected: Array[Array] = _to_Array_of_Array(params[2])
+	grid_manager.try_add_new_shape(TetrisShape.Type.T_Block, row, col)
+	
+	grid_manager.stick_shape_to_grid()
+	
+	assert_eq_deep(grid_manager.get_grid(), expected)
+	
+func test_clean_up_filled_rows():
+	var grid_manager = GridManager.new(3, 5)
+	grid_manager._grid = _to_Array_of_Array([
+		[0, 1, 0],
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 1]])
+	var expected: Array[Array] = [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 0, 1]]
+	
+	grid_manager.clean_up_filled_rows()
+	
+	assert_eq_deep(grid_manager.get_grid(), expected)
+	
 func _prepare_grid(width: int, height: int, params: Array, shape_type: TetrisShape.Type) -> GridManager:
 	var expected: bool = params[0]
 	var row: int = params[1]
@@ -229,7 +274,7 @@ func _prepare_grid(width: int, height: int, params: Array, shape_type: TetrisSha
 	var grid: Array[Array] = _to_Array_of_Array(params[3])
 	
 	var grid_manager = GridManager.new(width, height)
-	grid_manager.add_new_shape(shape_type, row, col)
+	grid_manager.try_add_new_shape(shape_type, row, col)
 	grid_manager._grid = grid
 	
 	return grid_manager
