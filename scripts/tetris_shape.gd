@@ -64,35 +64,35 @@ static func get_i_block_shape() -> Array[Array]:
 		
 static func get_j_block_shape() -> Array[Array]:
 	return [ 
-		[1, 0, 0],
-		[1, 1, 1],
+		[2, 0, 0],
+		[2, 2, 2],
 		[0, 0, 0]]
 		
 static func get_l_block_shape() -> Array[Array]:
 	return [ 
-		[0, 0, 1],
-		[1, 1, 1],
+		[0, 0, 3],
+		[3, 3, 3],
 		[0, 0, 0]]
 		
 static func get_o_block_shape() -> Array[Array]:
 	return [ 
-		[1, 1],
-		[1, 1]]
+		[4, 4],
+		[4, 4]]
 		
 static func get_s_block_shape() -> Array[Array]:
 	return [ 
 		[0, 0, 0],
-		[0, 1, 1],
-		[1, 1, 0]]
+		[0, 5, 5],
+		[5, 5, 0]]
 		
 static func get_t_block_shape() -> Array[Array]:
 	return [ 
-		[0, 1, 0],
-		[1, 1, 1],
+		[0, 6, 0],
+		[6, 6, 6],
 		[0, 0, 0]]
 		
 static func get_z_block_shape() -> Array[Array]:
 	return [ 
 		[0, 0, 0],
-		[1, 1, 0],
-		[0, 1, 1]]
+		[7, 7, 0],
+		[0, 7, 7]]

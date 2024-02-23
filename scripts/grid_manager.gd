@@ -49,7 +49,7 @@ func can_fit(shape: Array[Array], row: int, col: int) -> bool:
 	
 	for c in range(w):
 		for r in range(h):
-			var shape_occupied = shape[r][c] == 1
+			var shape_occupied = shape[r][c] != 0
 			if not shape_occupied:
 				continue
 				
@@ -58,7 +58,7 @@ func can_fit(shape: Array[Array], row: int, col: int) -> bool:
 			if out_of_width || out_of_height:
 				return false
 			
-			var grid_occupied = _grid[row+r][col+c] == 1
+			var grid_occupied = _grid[row+r][col+c] != 0
 			if grid_occupied:
 				return false
 				
