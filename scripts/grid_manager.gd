@@ -13,21 +13,9 @@ func _init(width: int, height: int):
 		
 func try_add_new_shape(type: TetrisShape.Type, row, col):
 	current_shape = TetrisShape.new(type)
-	s_row = clamp(row, 0, get_height() - current_shape.get_size())
-	s_col = clamp(col, 0, get_width() - current_shape.get_size())
-	
-	if row < 0:
-		while try_move_up():
-			pass
-	if row >= get_height():
-		while try_move_down():
-			pass
-	if col < 0:
-		while try_move_left():
-			pass
-	if col >= get_width():
-		while try_move_right():
-			pass
+	var bounds := current_shape.get_actual_bounds()
+	s_col = clamp(col, -bounds[0], get_width() - bounds[2] - 1)
+	s_row = clamp(row, -bounds[1], get_height() - bounds[3] - 1)
 			
 	return can_fit(current_shape.get_shape(), s_row, s_col)
 	
