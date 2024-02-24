@@ -1,12 +1,12 @@
 class_name TetrisShape
 
 enum Type {
-	I_Block, 
-	J_Block, 
-	L_Block, 
-	O_Block, 
-	S_Block, 
-	T_Block, 
+	I_Block,
+	J_Block,
+	L_Block,
+	O_Block,
+	S_Block,
+	T_Block,
 	Z_Block}
 
 var type: Type
@@ -33,6 +33,45 @@ func _init(shape_type: Type):
 			
 func rotate():
 	_shape = get_rotation()
+	
+func get_actual_bounds() -> Vector4i:
+	var x1: int = 0
+	for i in range(get_size()):
+		if not col_is_empty(i):
+			x1 = i
+			break
+	
+	var y1: int = 0
+	for i in range(get_size()):
+		if not row_is_empty(i):
+			y1 = i
+			break
+			
+	var x2: int = 0
+	for i in range(get_size() - 1, 0, -1):
+		if not col_is_empty(i):
+			x2 = i
+			break
+			
+	var y2: int = 0
+	for i in range(get_size() - 1, 0, -1):
+		if not row_is_empty(i):
+			y2 = i
+			break
+	
+	return Vector4i(x1, y1, x2, y2)
+	
+func row_is_empty(row: int):
+	for i in range(get_size()):
+		if _shape[row][i] != 0:
+			return false
+	return true
+	
+func col_is_empty(col: int):
+	for i in range(get_size()):
+		if _shape[i][col] != 0:
+			return false
+	return true
 	
 func get_rotation() -> Array[Array]:
 	var n = get_size()
