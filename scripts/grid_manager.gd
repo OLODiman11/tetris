@@ -3,6 +3,7 @@ class_name GridManager
 var current_shape: TetrisShape = null
 var s_row: int
 var s_col: int
+var p_row: int
 
 var _grid: Array[Array]
 
@@ -16,8 +17,36 @@ func try_add_new_shape(type: TetrisShape.Type, row, col):
 	var bounds := current_shape.get_actual_bounds()
 	s_col = clamp(col, -bounds[0], get_width() - bounds[2] - 1)
 	s_row = clamp(row, -bounds[1], get_height() - bounds[3] - 1)
-			
-	return can_fit(current_shape.get_shape(), s_row, s_col)
+	if can_fit(current_shape.get_shape(), s_row, s_col):
+		get_preview_row()
+		return true
+	return false
+	
+func get_preview_row():
+	for row in range(s_row + 1, get_height()):
+		if not can_fit(current_shape.get_shape(), row, s_col):
+			p_row = row - 1
+			break
+	return p_row
+	
+func stick_to_grid(shape: Array[Array], row: int, col: int):
+	var new_grid = get_grid()
+		
+	var width := shape[0].size()
+	var height := shape.size()
+	for c in range(width):
+		var out_of_bounds := c + col < 0 || c + col >= get_width()
+		if out_of_bounds:
+			continue
+		for r in range(height):
+			if current_shape.get_shape()[r][c] == 0:
+				continue
+			out_of_bounds = r + row < 0 || r + row >= get_height()
+			if out_of_bounds:
+				continue
+			new_grid[row+r][col+c] = -shape[r][c]
+			new_grid[row+r][col+c] = shape[r][c]
+	return new_grid
 	
 func get_whole_grid() -> Array[Array]:
 	var whole_grid = get_grid()
@@ -35,6 +64,7 @@ func get_whole_grid() -> Array[Array]:
 			out_of_bounds = row + s_row < 0 || row + s_row >= get_height()
 			if out_of_bounds:
 				continue
+			whole_grid[row+p_row][col+s_col] = -current_shape.get_shape()[row][col]
 			whole_grid[row+s_row][col+s_col] = current_shape.get_shape()[row][col]
 	return whole_grid
 	
@@ -65,6 +95,7 @@ func can_rotate_shape() -> bool:
 func try_rotate_shape() -> bool:
 	if can_rotate_shape():
 		current_shape.rotate()
+		get_preview_row()
 		return true
 	return false
 	
@@ -92,6 +123,7 @@ func can_move_left() -> bool:
 func try_move_left() -> bool:
 	if can_move_left():
 		s_col -= 1
+		get_preview_row()
 		return true
 	return false
 	
@@ -101,11 +133,12 @@ func can_move_right() -> bool:
 func try_move_right() -> bool:
 	if can_move_right():
 		s_col += 1
+		get_preview_row()
 		return true
 	return false
 	
 func stick_shape_to_grid():
-	_grid = get_whole_grid()
+	_grid = stick_to_grid(current_shape.get_shape(), s_row, s_col)
 	current_shape = null
 	
 func clean_up_filled_rows():

@@ -66,7 +66,9 @@ func update_grid(new_grid: Array[Array]):
 	
 	for row in range(height):
 		for col in range(width):
-			var color := colors[new_grid[row][col]]
+			var color := colors[abs(new_grid[row][col])]
+			if new_grid[row][col] < 0:
+				color.a = 0.5
 			var index = row * width + col
 			var x := col * tile_size + tile_margin
 			var y := row * tile_size + tile_margin
