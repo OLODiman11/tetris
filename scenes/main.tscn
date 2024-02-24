@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uf3kh"]
 [ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_akgop"]
-[ext_resource type="Script" path="res://scripts/hide_label.gd" id="3_ngded"]
+[ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="4_23fyf"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -14,7 +14,8 @@ grid_visualuzer = NodePath("../GridVisualizer")
 
 [node name="GridVisualizer" type="Node2D" parent="."]
 script = ExtResource("2_akgop")
-tile_size = 42.0
+tile_size = 39.0
+grid = Array[Array]([[0, 0, 0, 1, 0, 1, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 2, 3, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_right = 680.0
@@ -25,7 +26,6 @@ layout_mode = 2
 text = "Буква R"
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("3_ngded")
 
 [node name="Label2" type="Label" parent="CenterContainer"]
 visible = false
@@ -34,7 +34,28 @@ text = "Ты всё проебал!
 Буква R"
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("3_ngded")
+
+[node name="PreviewBox" type="Node2D" parent="."]
+position = Vector2(450, 100)
+script = ExtResource("4_23fyf")
+
+[node name="ScoreLabel" type="Label" parent="."]
+visible = false
+offset_left = 494.0
+offset_top = 813.0
+offset_right = 534.0
+offset_bottom = 836.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="game_lost" from="GameManager" to="GridVisualizer" method="hide"]
 [connection signal="game_lost" from="GameManager" to="CenterContainer/Label2" method="show"]
+[connection signal="game_lost" from="GameManager" to="PreviewBox" method="hide"]
+[connection signal="game_lost" from="GameManager" to="ScoreLabel" method="hide"]
+[connection signal="game_started" from="GameManager" to="CenterContainer/Label" method="hide"]
+[connection signal="game_started" from="GameManager" to="CenterContainer/Label2" method="hide"]
+[connection signal="game_started" from="GameManager" to="PreviewBox" method="show"]
+[connection signal="game_started" from="GameManager" to="ScoreLabel" method="show"]
+[connection signal="new_shape_placed" from="GameManager" to="PreviewBox" method="show_preview"]
+[connection signal="score_changed" from="GameManager" to="ScoreLabel" method="set_text"]
