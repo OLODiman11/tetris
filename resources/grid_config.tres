@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="GridConfig" load_steps=2 format=3 uid="uid://dcc6flepvslcq"]
+
+[ext_resource type="Script" path="res://resources/grid_config.gd" id="1_cb6by"]
+
+[resource]
+script = ExtResource("1_cb6by")
+tile_size = 39.0
+tile_margin = 2.0
+fall_preview_alpha = 0.5
+background_color = Color(0.411765, 0.411765, 0.411765, 1)
+colors = [Color(1, 1, 1, 0), Color(1, 0, 0, 1), Color(1, 0.647059, 0, 1), Color(1, 1, 0, 1), Color(0, 1, 0, 1), Color(0, 0, 1, 1), Color(0, 0, 0.545098, 1), Color(0.627451, 0.12549, 0.941176, 1)]
