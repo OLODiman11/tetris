@@ -9,10 +9,12 @@ signal new_shape_placed(Array)
 
 @export var width := 10
 @export var height := 22
-@export var tiles_per_sec := 1.0
-@export var speed_boost := 2.0
+@export var tiles_per_sec := 2.0
+@export var speed_boost := 10.0
 @export var scores_per_row := 100
 @export var grid_visualuzer: GridVisualizer = null
+@export var fast_move_delay := 0.15
+@export var side_move_speed := 7
 
 var shape_list: Array[TetrisShape.Type]
 var score: int = 0:
@@ -23,7 +25,7 @@ var score: int = 0:
 var _is_running := false
 var _grid_manager: GridManager = null
 var _time_elapsed := 0.0
-
+var _input_time_elapsed := -fast_move_delay
 
 func _input(event):
 	if event.is_action_pressed("restart"):
@@ -38,9 +40,12 @@ func _input(event):
 	
 	if event.is_action_pressed("move_right"):
 		should_redraw = should_redraw || _grid_manager.try_move_right()
+		_input_time_elapsed = -fast_move_delay
+		
 	
 	if event.is_action_pressed("move_left"):
 		should_redraw = should_redraw || _grid_manager.try_move_left()
+		_input_time_elapsed = -fast_move_delay
 
 	if should_redraw:
 		redraw_grid()
@@ -49,24 +54,33 @@ func _process(delta):
 	if not is_running():
 		return
 	
+	var moved := false
+	
+	var sec_per_side_move = 1.0 / side_move_speed
+	_input_time_elapsed += delta
+	if _input_time_elapsed >= sec_per_side_move:
+		_input_time_elapsed = fmod(_input_time_elapsed, sec_per_side_move)
+		if Input.is_action_pressed("move_right"):
+			moved = moved || _grid_manager.try_move_right() 
+		if Input.is_action_pressed("move_left"):
+			moved = moved || _grid_manager.try_move_left()
+	
 	var sec_per_move := 1.0 / tiles_per_sec
 	if Input.is_action_pressed("boost"):
 		sec_per_move /= speed_boost
 	
 	_time_elapsed += delta
-	if _time_elapsed < sec_per_move:
-		return
-		
-	_time_elapsed = fmod(_time_elapsed, sec_per_move)
-	var moved := _grid_manager.try_move_down()
-	if not _grid_manager.can_move_down():
-		_grid_manager.stick_shape_to_grid()
-		var filled_rows = _grid_manager.get_filled_rows()
-		score += filled_rows.size() * scores_per_row
-		_grid_manager.clean_up_filled_rows()
-		if not try_place_next_shape():
-			emit_signal("game_lost")
-			_is_running = false
+	if _time_elapsed >= sec_per_move:
+		_time_elapsed = fmod(_time_elapsed, sec_per_move)
+		moved = _grid_manager.try_move_down() || moved
+		if not _grid_manager.can_move_down():
+			_grid_manager.stick_shape_to_grid()
+			var filled_rows = _grid_manager.get_filled_rows()
+			score += filled_rows.size() * scores_per_row
+			_grid_manager.clean_up_filled_rows()
+			if not try_place_next_shape():
+				emit_signal("game_lost")
+				_is_running = false
 	
 	if moved:
 		redraw_grid()

@@ -1,16 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cj0a6y04one60"]
+[gd_scene load_steps=5 format=3 uid="uid://cj0a6y04one60"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uf3kh"]
 [ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_akgop"]
 [ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="4_23fyf"]
+[ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_y4ba0"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("grid_visualuzer")]
 script = ExtResource("1_uf3kh")
-tiles_per_sec = 2.0
-speed_boost = 10.0
 grid_visualuzer = NodePath("../GridVisualizer")
+side_move_speed = 10
 
 [node name="GridVisualizer" type="Node2D" parent="."]
 script = ExtResource("2_akgop")
@@ -46,6 +46,15 @@ offset_bottom = 836.0
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="FPSLabel" type="Label" parent="."]
+offset_left = 394.0
+offset_right = 638.0
+offset_bottom = 23.0
+text = "FPS: "
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("4_y4ba0")
 
 [connection signal="game_lost" from="GameManager" to="GridVisualizer" method="hide"]
 [connection signal="game_lost" from="GameManager" to="CenterContainer/Label2" method="show"]
