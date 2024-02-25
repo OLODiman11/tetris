@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://cj0a6y04one60"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uf3kh"]
+[ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_akgop"]
+[ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="4_23fyf"]
+[ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_y4ba0"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("grid_visualuzer")]
+script = ExtResource("1_uf3kh")
+grid_visualuzer = NodePath("../GridVisualizer")
+side_move_speed = 10
+
+[node name="GridVisualizer" type="Node2D" parent="."]
+script = ExtResource("2_akgop")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_right = 680.0
+offset_bottom = 840.0
+
+[node name="Label" type="Label" parent="CenterContainer"]
+layout_mode = 2
+text = "Буква R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+text = "Ты всё проебал!
+Буква R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PreviewBox" type="Node2D" parent="."]
+position = Vector2(500, 100)
+script = ExtResource("4_23fyf")
+
+[node name="ScoreLabel" type="Label" parent="."]
+visible = false
+offset_left = 494.0
+offset_top = 813.0
+offset_right = 534.0
+offset_bottom = 836.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FPSLabel" type="Label" parent="."]
+offset_left = 394.0
+offset_right = 638.0
+offset_bottom = 23.0
+text = "FPS: "
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("4_y4ba0")
+
+[connection signal="game_lost" from="GameManager" to="GridVisualizer" method="hide"]
+[connection signal="game_lost" from="GameManager" to="CenterContainer/Label2" method="show"]
+[connection signal="game_lost" from="GameManager" to="PreviewBox" method="hide"]
+[connection signal="game_lost" from="GameManager" to="ScoreLabel" method="hide"]
+[connection signal="game_started" from="GameManager" to="CenterContainer/Label" method="hide"]
+[connection signal="game_started" from="GameManager" to="CenterContainer/Label2" method="hide"]
+[connection signal="game_started" from="GameManager" to="PreviewBox" method="show"]
+[connection signal="game_started" from="GameManager" to="ScoreLabel" method="show"]
+[connection signal="new_shape_placed" from="GameManager" to="PreviewBox" method="show_preview"]
+[connection signal="score_changed" from="GameManager" to="ScoreLabel" method="set_text"]

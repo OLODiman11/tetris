@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6pittu0wuohe"]
+
+[ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="1_2rred"]
+
+[node name="PreviewBox" type="Node2D"]
+script = ExtResource("1_2rred")
