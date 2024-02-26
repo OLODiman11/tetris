@@ -96,7 +96,6 @@ func try_rotate_shape() -> bool:
 	if can_rotate_shape():
 		current_shape.rotate()
 		get_preview_row()
-		AudioManager.dash_sfx.play()
 		return true
 	return false
 	
@@ -125,7 +124,6 @@ func try_move_left() -> bool:
 	if can_move_left():
 		s_col -= 1
 		get_preview_row()
-		AudioManager.dash_sfx.play()
 		return true
 	return false
 	
@@ -136,7 +134,6 @@ func try_move_right() -> bool:
 	if can_move_right():
 		s_col += 1
 		get_preview_row()
-		AudioManager.dash_sfx.play()
 		return true
 	return false
 	
@@ -163,7 +160,6 @@ func get_filled_rows() -> Array[int]:
 	var filled_rows: Array[int] = []
 	for row in range(get_height()):
 		if row_is_filled(row):
-			AudioManager.row_sfx.play()
 			filled_rows.append(row)
 	return filled_rows
 				

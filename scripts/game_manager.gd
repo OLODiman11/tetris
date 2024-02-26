@@ -36,16 +36,22 @@ func _input(event):
 	
 	var should_redraw := false	
 	if event.is_action_pressed("rotate"):
-		should_redraw = should_redraw || _grid_manager.try_rotate_shape() 
+		if _grid_manager.can_rotate_shape():
+			AudioManager.dash_sfx.play()
+			should_redraw = should_redraw || _grid_manager.try_rotate_shape() 
 	
 	if event.is_action_pressed("move_right"):
-		should_redraw = should_redraw || _grid_manager.try_move_right()
-		_input_time_elapsed = -fast_move_delay
+		if _grid_manager.can_move_right():
+			AudioManager.dash_sfx.play()
+			should_redraw = should_redraw || _grid_manager.try_move_right()
+			_input_time_elapsed = -fast_move_delay
 		
 	
-	if event.is_action_pressed("move_left"):
-		should_redraw = should_redraw || _grid_manager.try_move_left()
-		_input_time_elapsed = -fast_move_delay
+	if event.is_action_pressed("move_left"):\
+		if _grid_manager.can_move_left():
+			AudioManager.dash_sfx.play()
+			should_redraw = should_redraw || _grid_manager.try_move_left()
+			_input_time_elapsed = -fast_move_delay
 
 	if should_redraw:
 		redraw_grid()
@@ -82,6 +88,8 @@ func _process(delta):
 		if not _grid_manager.can_move_down():
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
+			if filled_rows:
+				AudioManager.row_sfx.play()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()
 			
