@@ -36,16 +36,19 @@ func _input(event):
 	
 	var should_redraw := false	
 	if event.is_action_pressed("rotate"):
-		should_redraw = should_redraw || _grid_manager.try_rotate_shape() 
+		if _try_rotate_shape():
+			should_redraw = true 
 	
 	if event.is_action_pressed("move_right"):
-		should_redraw = should_redraw || _grid_manager.try_move_right()
-		_input_time_elapsed = -fast_move_delay
+		if _try_move_right():
+			should_redraw = true
 		
 	
 	if event.is_action_pressed("move_left"):
-		should_redraw = should_redraw || _grid_manager.try_move_left()
 		_input_time_elapsed = -fast_move_delay
+		if _try_move_left():
+			should_redraw = true
+			
 
 	if should_redraw:
 		redraw_grid()
@@ -61,13 +64,19 @@ func _process(delta):
 	if _input_time_elapsed >= sec_per_side_move:
 		_input_time_elapsed = fmod(_input_time_elapsed, sec_per_side_move)
 		if Input.is_action_pressed("move_right"):
-			moved = moved || _grid_manager.try_move_right() 
+			moved = moved || _try_move_right() 
 		if Input.is_action_pressed("move_left"):
-			moved = moved || _grid_manager.try_move_left()
+			moved = moved || _try_move_left()
 	
 	var sec_per_move := 1.0 / tiles_per_sec
 	if Input.is_action_pressed("boost"):
 		sec_per_move /= speed_boost
+		
+	if Input.is_action_just_pressed("boost"):
+		AudioManager.boost_sfx.play()
+		
+	if Input.is_action_just_released("boost"):
+		AudioManager.boost_sfx.stop()
 	
 	_time_elapsed += delta
 	if _time_elapsed >= sec_per_move:
@@ -76,14 +85,21 @@ func _process(delta):
 		if not _grid_manager.can_move_down():
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
+			if filled_rows:
+				AudioManager.row_sfx.play()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()
+			
 			if not try_place_next_shape():
 				emit_signal("game_lost")
 				_is_running = false
+				AudioManager.background_music.stop()
 	
 	if moved:
 		redraw_grid()
+		
+	if Input.is_action_pressed("key_exit"):
+		get_tree().quit()
 	
 func restart():
 	emit_signal("game_started")
@@ -94,6 +110,8 @@ func restart():
 	try_place_next_shape()
 	redraw_grid()
 	grid_visualuzer.show()
+	AudioManager.background_music.play()
+	
 	
 func populate_shape_list(size: int):
 	shape_list = []
@@ -119,3 +137,21 @@ func is_running():
 	
 func redraw_grid():
 	grid_visualuzer.update_grid(_grid_manager.get_whole_grid())
+	
+func _try_move_left():
+	if _grid_manager.try_move_left():
+		AudioManager.dash_sfx.play()
+		return true
+	return false
+		
+func _try_move_right():
+	if _grid_manager.try_move_right():
+		AudioManager.dash_sfx.play()
+		return true
+	return false
+		
+func _try_rotate_shape():
+	if _grid_manager.try_rotate_shape():
+		AudioManager.dash_sfx.play()
+		return true
+	return false

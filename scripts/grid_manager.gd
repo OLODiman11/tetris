@@ -145,12 +145,14 @@ func clean_up_filled_rows():
 	var filled_rows = get_filled_rows()
 	var new_grid: Array[Array] = []
 	
+	
 	for i in range(filled_rows.size()):
 		new_grid.append(_get_empty_row(get_width()))
 	
 	for row in range(get_height()):
 		if row not in filled_rows:
 			new_grid.append(_grid[row])
+			
 	
 	_grid = new_grid
 	
