@@ -36,21 +36,21 @@ func _input(event):
 	
 	var should_redraw := false	
 	if event.is_action_pressed("rotate"):
-		if _grid_manager.can_rotate_shape():
+		if _grid_manager.try_rotate_shape():
 			AudioManager.dash_sfx.play()
-			should_redraw = should_redraw || _grid_manager.try_rotate_shape() 
+			should_redraw = true 
 	
 	if event.is_action_pressed("move_right"):
-		if _grid_manager.can_move_right():
+		if _grid_manager.try_move_right():
 			AudioManager.dash_sfx.play()
-			should_redraw = should_redraw || _grid_manager.try_move_right()
+			should_redraw = true
 			_input_time_elapsed = -fast_move_delay
 		
 	
 	if event.is_action_pressed("move_left"):\
-		if _grid_manager.can_move_left():
+		if _grid_manager.try_move_left():
 			AudioManager.dash_sfx.play()
-			should_redraw = should_redraw || _grid_manager.try_move_left()
+			should_redraw = true
 			_input_time_elapsed = -fast_move_delay
 
 	if should_redraw:
