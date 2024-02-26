@@ -1,19 +1,19 @@
 [gd_scene load_steps=5 format=3 uid="uid://cj0a6y04one60"]
 
-[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uf3kh"]
-[ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_akgop"]
-[ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="4_23fyf"]
-[ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_y4ba0"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_n0sj3"]
+[ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_3x2fm"]
+[ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="3_02mcv"]
+[ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_d2a0j"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("grid_visualuzer")]
-script = ExtResource("1_uf3kh")
+script = ExtResource("1_n0sj3")
 grid_visualuzer = NodePath("../GridVisualizer")
 side_move_speed = 10
 
 [node name="GridVisualizer" type="Node2D" parent="."]
-script = ExtResource("2_akgop")
+script = ExtResource("2_3x2fm")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_right = 680.0
@@ -35,7 +35,7 @@ vertical_alignment = 1
 
 [node name="PreviewBox" type="Node2D" parent="."]
 position = Vector2(500, 100)
-script = ExtResource("4_23fyf")
+script = ExtResource("3_02mcv")
 
 [node name="ScoreLabel" type="Label" parent="."]
 visible = false
@@ -54,7 +54,7 @@ offset_bottom = 23.0
 text = "FPS: "
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("4_y4ba0")
+script = ExtResource("4_d2a0j")
 
 [connection signal="game_lost" from="GameManager" to="GridVisualizer" method="hide"]
 [connection signal="game_lost" from="GameManager" to="CenterContainer/Label2" method="show"]

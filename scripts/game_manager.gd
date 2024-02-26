@@ -68,6 +68,12 @@ func _process(delta):
 	var sec_per_move := 1.0 / tiles_per_sec
 	if Input.is_action_pressed("boost"):
 		sec_per_move /= speed_boost
+		
+	if Input.is_action_just_pressed("boost"):
+		AudioManager.boost_sfx.play()
+		
+	if Input.is_action_just_released("boost"):
+		AudioManager.boost_sfx.stop()
 	
 	_time_elapsed += delta
 	if _time_elapsed >= sec_per_move:
@@ -78,12 +84,17 @@ func _process(delta):
 			var filled_rows = _grid_manager.get_filled_rows()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()
+			
 			if not try_place_next_shape():
 				emit_signal("game_lost")
 				_is_running = false
+				AudioManager.background_music.stop()
 	
 	if moved:
 		redraw_grid()
+		
+	if Input.is_action_pressed("key_exit"):
+		get_tree().quit()
 	
 func restart():
 	emit_signal("game_started")
@@ -94,6 +105,8 @@ func restart():
 	try_place_next_shape()
 	redraw_grid()
 	grid_visualuzer.show()
+	AudioManager.background_music.play()
+	
 	
 func populate_shape_list(size: int):
 	shape_list = []

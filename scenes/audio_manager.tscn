@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgvihn227uat8"]
+
+[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="1_1jnif"]
+[ext_resource type="AudioStream" uid="uid://5dl516j3yiaj" path="res://assets/music/BackgroundMusic.mp3" id="2_3557y"]
+[ext_resource type="AudioStream" uid="uid://bx8owjwf1dol2" path="res://assets/music/Dash.mp3" id="3_i5v7i"]
+[ext_resource type="AudioStream" uid="uid://baj6rulykh0ra" path="res://assets/music/Row.mp3" id="4_iaxeg"]
+[ext_resource type="AudioStream" uid="uid://fq8j0s72tf5w" path="res://assets/music/Boost.mp3" id="5_hlr3c"]
+[ext_resource type="AudioStream" uid="uid://clhmp3mq5j3j3" path="res://assets/music/Rotate.mp3" id="6_sewtk"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_1jnif")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_3557y")
+
+[node name="DashSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_i5v7i")
+volume_db = -5.0
+
+[node name="RowSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_iaxeg")
+
+[node name="BoostSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_hlr3c")
+volume_db = -7.0
+
+[node name="RotateSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_sewtk")
+volume_db = -7.0
