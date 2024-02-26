@@ -36,17 +36,17 @@ func _input(event):
 	
 	var should_redraw := false	
 	if event.is_action_pressed("rotate"):
-		if try_rotate_shape():
+		if _try_rotate_shape():
 			should_redraw = true 
 	
 	if event.is_action_pressed("move_right"):
-		if try_move_right():
+		if _try_move_right():
 			should_redraw = true
 		
 	
 	if event.is_action_pressed("move_left"):
 		_input_time_elapsed = -fast_move_delay
-		if try_move_left():
+		if _try_move_left():
 			should_redraw = true
 			
 
@@ -64,9 +64,9 @@ func _process(delta):
 	if _input_time_elapsed >= sec_per_side_move:
 		_input_time_elapsed = fmod(_input_time_elapsed, sec_per_side_move)
 		if Input.is_action_pressed("move_right"):
-			moved = moved || try_move_right() 
+			moved = moved || _try_move_right() 
 		if Input.is_action_pressed("move_left"):
-			moved = moved || try_move_left()
+			moved = moved || _try_move_left()
 	
 	var sec_per_move := 1.0 / tiles_per_sec
 	if Input.is_action_pressed("boost"):
@@ -138,19 +138,19 @@ func is_running():
 func redraw_grid():
 	grid_visualuzer.update_grid(_grid_manager.get_whole_grid())
 	
-func try_move_left():
+func _try_move_left():
 	if _grid_manager.try_move_left():
 		AudioManager.dash_sfx.play()
 		return true
 	return false
 		
-func try_move_right():
+func _try_move_right():
 	if _grid_manager.try_move_right():
 		AudioManager.dash_sfx.play()
 		return true
 	return false
 		
-func try_rotate_shape():
+func _try_rotate_shape():
 	if _grid_manager.try_rotate_shape():
 		AudioManager.dash_sfx.play()
 		return true
