@@ -4,6 +4,8 @@ extends Node
 @onready var dash_sfx = $DashSFX
 @onready var row_sfx = $RowSFX
 @onready var boost_sfx = $BoostSFX
+@onready var drop_sfx = $DropSFX
+@onready var youmoose_sfx = $Youmoose
 
 
 

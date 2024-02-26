@@ -83,6 +83,7 @@ func _process(delta):
 		_time_elapsed = fmod(_time_elapsed, sec_per_move)
 		moved = _grid_manager.try_move_down() || moved
 		if not _grid_manager.can_move_down():
+			AudioManager.drop_sfx.play()
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
 			if filled_rows:
@@ -93,7 +94,9 @@ func _process(delta):
 			if not try_place_next_shape():
 				emit_signal("game_lost")
 				_is_running = false
+				AudioManager.youmoose_sfx.play()
 				AudioManager.background_music.stop()
+				AudioManager.boost_sfx.stop()
 	
 	if moved:
 		redraw_grid()
@@ -111,6 +114,7 @@ func restart():
 	redraw_grid()
 	grid_visualuzer.show()
 	AudioManager.background_music.play()
+	AudioManager.youmoose_sfx.stop()
 	
 	
 func populate_shape_list(size: int):
