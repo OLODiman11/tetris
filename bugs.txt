@@ -1,0 +1,1 @@
+ bug-m1: Moving a piece to left and right goes with a different speed. Holding "Left" causes a little delay in moving a piece, while it works fine with "Right" button.
