@@ -40,6 +40,7 @@ func _input(event):
 			should_redraw = true 
 	
 	if event.is_action_pressed("move_right"):
+		_input_time_elapsed = -fast_move_delay
 		if _try_move_right():
 			should_redraw = true
 		

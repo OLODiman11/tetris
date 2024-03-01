@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cgde7oxtli4rd"]
+[gd_scene load_steps=9 format=3 uid="uid://cgde7oxtli4rd"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_cve0i"]
 [ext_resource type="Texture2D" uid="uid://lku1ty0hvtvv" path="res://assets/pictures/tetris-background.png" id="2_ycwoo"]
 [ext_resource type="FontFile" uid="uid://ca0h6iu4buqvp" path="res://assets/fonts/3997-font.otf" id="3_22ede"]
+[ext_resource type="Script" path="res://scripts/menu_button.gd" id="4_3in1k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6wub"]
 bg_color = Color(1, 0, 0, 1)
@@ -82,6 +83,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
 text = "Start"
+script = ExtResource("4_3in1k")
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -98,7 +100,8 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
-text = "Settings"
+text = "Options"
+script = ExtResource("4_3in1k")
 
 [node name="LeaderstatsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -116,6 +119,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
 text = "Leaderstats"
+script = ExtResource("4_3in1k")
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -134,8 +138,10 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
 text = "Exit"
+script = ExtResource("4_3in1k")
 
 [node name="LanguageButton" type="Button" parent="."]
+layout_mode = 0
 offset_left = 15.0
 offset_top = 15.0
 offset_right = 231.0
@@ -155,6 +161,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
 text = "Language"
+script = ExtResource("4_3in1k")
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
