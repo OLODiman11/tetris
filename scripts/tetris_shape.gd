@@ -11,6 +11,9 @@ enum Type {
 
 var type: Type
 
+var _rotation_state := 0:
+	set(value):
+		_rotation_state = value % 4
 var _shape: Array[Array]
 
 func _init(shape_type: Type):
@@ -32,6 +35,7 @@ func _init(shape_type: Type):
 			_shape = TetrisShape.get_z_block_shape()
 			
 func rotate():
+	_rotation_state += 1
 	_shape = get_rotation()
 	
 func get_actual_bounds() -> Vector4i:
@@ -72,6 +76,9 @@ func col_is_empty(col: int):
 		if _shape[i][col] != 0:
 			return false
 	return true
+	
+func get_rotation_state() -> int:
+	return _rotation_state
 	
 func get_rotation() -> Array[Array]:
 	var n = get_size()
