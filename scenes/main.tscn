@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cj0a6y04one60"]
+[gd_scene load_steps=6 format=3 uid="uid://cj0a6y04one60"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_n0sj3"]
 [ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_3x2fm"]
 [ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="3_02mcv"]
 [ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_d2a0j"]
+[ext_resource type="Script" path="res://scripts/ad.gd" id="5_pp308"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -56,10 +57,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("4_d2a0j")
 
+[node name="Ad" type="Node2D" parent="."]
+script = ExtResource("5_pp308")
+
 [connection signal="game_lost" from="GameManager" to="GridVisualizer" method="hide"]
 [connection signal="game_lost" from="GameManager" to="CenterContainer/Label2" method="show"]
 [connection signal="game_lost" from="GameManager" to="PreviewBox" method="hide"]
 [connection signal="game_lost" from="GameManager" to="ScoreLabel" method="hide"]
+[connection signal="game_lost" from="GameManager" to="Ad" method="load_ad"]
 [connection signal="game_started" from="GameManager" to="CenterContainer/Label" method="hide"]
 [connection signal="game_started" from="GameManager" to="CenterContainer/Label2" method="hide"]
 [connection signal="game_started" from="GameManager" to="PreviewBox" method="show"]
