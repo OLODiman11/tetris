@@ -5,12 +5,22 @@ extends Node2D
 @export var config: GridConfig = preload("res://resources/grid_config.tres")
 @export var type: TetrisShape.Type
 
+var offset: Vector2
+var top_left_position: Vector2:
+	set(value):
+		position = value + offset
+	get:
+		return position - offset
+
 func _init(type: TetrisShape.Type):
 	self.type = type
 	update_shape()
-
+	
 func _ready():
 	update_shape()
+
+func set_rotation_state(state: int):
+	set_rotation_degrees(90 * state)
 
 func get_bounds() -> Vector4:
 	var bounds := config.tile_size * TetrisShape.new(type).get_actual_bounds()
@@ -23,10 +33,10 @@ func update_shape():
 		remove_child(child)
 	var shape = TetrisShape.new(type).get_shape()
 	var shape_size = shape.size()
+	offset = config.tile_size * shape_size / 2.0 * Vector2.ONE
 	var size := config.tile_size - 2 * config.tile_margin
 	for row in range(shape_size):
 		for col in range(shape_size):
 			var color = config.colors[shape[row][col]]
-			var x = col * config.tile_size + config.tile_margin
-			var y = row * config.tile_size + config.tile_margin
-			add_child(Tile.new(color, Vector2i(x, y), Vector2i(size, size)))
+			var pos := config.tile_size * Vector2(col, row) + config.tile_margin * Vector2.ONE - offset
+			add_child(Tile.new(color, pos, Vector2(size, size)))

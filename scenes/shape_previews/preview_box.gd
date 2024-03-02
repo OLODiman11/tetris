@@ -12,7 +12,8 @@ func show_preview(types: Array[TetrisShape.Type]):
 	for type in types:
 		var preview := ShapePreview.new(type)
 		var bounds := preview.get_bounds()
-		preview.position.x = - bounds[0] - bounds[2] / 2.0
-		preview.position.y = y - bounds[1]
+		var x := - bounds[0] - bounds[2] / 2.0
+		var _y := y - bounds[1]
+		preview.top_left_position = Vector2(x, _y)
 		y += bounds[3] + gap
 		add_child(preview)
