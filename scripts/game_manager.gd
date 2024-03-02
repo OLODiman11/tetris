@@ -27,8 +27,8 @@ var _grid_manager: GridManager = null
 var _time_elapsed := 0.0
 var _input_time_elapsed := -fast_move_delay
 
-#func _ready():
-	#restart()
+func _ready():
+	restart()
 
 func _input(event):
 	if event.is_action_pressed("restart"):
