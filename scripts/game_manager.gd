@@ -27,6 +27,9 @@ var _grid_manager: GridManager = null
 var _time_elapsed := 0.0
 var _input_time_elapsed := -fast_move_delay
 
+func _ready():
+	restart()
+
 func _input(event):
 	if event.is_action_pressed("restart"):
 		restart()
@@ -93,17 +96,16 @@ func _process(delta):
 			_grid_manager.clean_up_filled_rows()
 			
 			if not try_place_next_shape():
-				emit_signal("game_lost")
-				_is_running = false
+				_game_end()
 				AudioManager.youmoose_sfx.play()
-				AudioManager.background_music.stop()
-				AudioManager.boost_sfx.stop()
+				get_tree().change_scene_to_file("res://scenes/loose_menu.tscn")
 	
 	if moved:
 		redraw_grid()
 		
 	if Input.is_action_pressed("key_exit"):
-		get_tree().quit()
+		_game_end()
+		get_tree().change_scene_to_file("res://scenes/menu.tscn")
 	
 func restart():
 	emit_signal("game_started")
@@ -160,3 +162,8 @@ func _try_rotate_shape():
 		AudioManager.dash_sfx.play()
 		return true
 	return false
+
+func _game_end():
+	_is_running = false
+	AudioManager.background_music.stop()
+	AudioManager.boost_sfx.stop()
