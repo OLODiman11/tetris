@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cgde7oxtli4rd"]
+[gd_scene load_steps=10 format=3 uid="uid://cgde7oxtli4rd"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_cve0i"]
 [ext_resource type="Texture2D" uid="uid://lku1ty0hvtvv" path="res://assets/pictures/tetris-background.png" id="2_ycwoo"]
@@ -25,10 +25,8 @@ border_color = Color(0, 0, 0, 1)
 expand_margin_left = 3.0
 expand_margin_right = 3.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1t1fg"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vro3h"]
-bg_color = Color(1, 0.270588, 0.270588, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_je55b"]
+bg_color = Color(0.494118, 0, 0, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -36,6 +34,10 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 expand_margin_left = 3.0
 expand_margin_right = 3.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1t1fg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k7snu"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -59,10 +61,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -35.0
-offset_top = -50.5
-offset_right = 35.0
-offset_bottom = 50.5
+offset_left = -115.0
+offset_top = -94.0
+offset_right = 115.0
+offset_bottom = 94.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -79,9 +81,9 @@ theme_override_fonts/font = ExtResource("3_22ede")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_t6wub")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_je55b")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k7snu")
 text = "Start"
 script = ExtResource("4_3in1k")
 
@@ -97,9 +99,9 @@ theme_override_fonts/font = ExtResource("3_22ede")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_t6wub")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_je55b")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k7snu")
 text = "Options"
 script = ExtResource("4_3in1k")
 
@@ -115,9 +117,9 @@ theme_override_fonts/font = ExtResource("3_22ede")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_t6wub")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_je55b")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k7snu")
 text = "Leaderstats"
 script = ExtResource("4_3in1k")
 
@@ -134,9 +136,9 @@ theme_override_fonts/font = ExtResource("3_22ede")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_t6wub")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_je55b")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k7snu")
 text = "Exit"
 script = ExtResource("4_3in1k")
 
@@ -157,9 +159,9 @@ theme_override_fonts/font = ExtResource("3_22ede")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_t6wub")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mkke1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mkke1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_je55b")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1t1fg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vro3h")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k7snu")
 text = "Language"
 script = ExtResource("4_3in1k")
 
