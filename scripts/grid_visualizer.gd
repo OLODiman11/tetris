@@ -8,16 +8,17 @@ var current_shape: ShapePreview
 var fall_preview: ShapePreview
 
 func set_current_shape_rotation(rotation_state: int):
-	current_shape.set_rotation_state(rotation_state)
+	current_shape.tween_rotation_state(rotation_state)
 	
 func set_fall_preview_rotation(rotation_state: int):
 	fall_preview.set_rotation_state(rotation_state)
 	
-func set_current_shape(type: TetrisShape.Type):
+func set_current_shape(type: TetrisShape.Type, row: int, col: int):
 	if current_shape:
 		remove_child(current_shape)
 	current_shape = ShapePreview.new(type)
 	current_shape.update_shape()
+	current_shape.top_left_position = config.tile_size * Vector2(col, row)
 	add_child(current_shape)
 	
 	if fall_preview:
@@ -31,6 +32,9 @@ func set_current_shape(type: TetrisShape.Type):
 	
 func set_current_shape_position(row: int, col: int):
 	current_shape.top_left_position = config.tile_size * Vector2(col, row)
+	
+func tween_current_shape_position(row: int, col: int):
+	current_shape.tween_top_left_position(config.tile_size * Vector2(col, row))
 	
 func set_fall_preview_position(row: int, col: int):
 	fall_preview.top_left_position = config.tile_size * Vector2(col, row)

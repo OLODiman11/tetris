@@ -55,7 +55,7 @@ func _input(event):
 			
 
 	if should_redraw:
-		update_current_shape()
+		tween_current_shape()
 		
 func _process(delta):
 	if not is_running():
@@ -125,7 +125,9 @@ func restart():
 	
 func set_current_shape():
 	var shape_type := _grid_manager.current_shape.type
-	grid_visualuzer.set_current_shape(shape_type)
+	var row := _grid_manager.s_row
+	var col := _grid_manager.s_col
+	grid_visualuzer.set_current_shape(shape_type, row, col)
 	update_current_shape()
 	
 func update_current_shape():
@@ -133,6 +135,16 @@ func update_current_shape():
 	var col := _grid_manager.s_col
 	var rotation_state := _grid_manager.current_shape.get_rotation_state()
 	grid_visualuzer.set_current_shape_position(row, col)
+	#grid_visualuzer.set_current_shape_rotation(rotation_state)
+	var p_row := _grid_manager.p_row
+	grid_visualuzer.set_fall_preview_position(p_row, col)
+	grid_visualuzer.set_fall_preview_rotation(rotation_state)
+	
+func tween_current_shape():
+	var row := _grid_manager.s_row
+	var col := _grid_manager.s_col
+	var rotation_state := _grid_manager.current_shape.get_rotation_state()
+	grid_visualuzer.tween_current_shape_position(row, col)
 	grid_visualuzer.set_current_shape_rotation(rotation_state)
 	var p_row := _grid_manager.p_row
 	grid_visualuzer.set_fall_preview_position(p_row, col)

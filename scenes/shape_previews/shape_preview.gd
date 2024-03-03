@@ -4,7 +4,7 @@ extends Node2D
 
 @export var config: GridConfig = preload("res://resources/grid_config.tres")
 @export var type: TetrisShape.Type
-
+		
 var offset: Vector2
 var top_left_position: Vector2:
 	set(value):
@@ -19,8 +19,18 @@ func _init(type: TetrisShape.Type):
 func _ready():
 	update_shape()
 
+func tween_top_left_position(pos: Vector2):
+	var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, 'top_left_position:x', pos.x, 0.5)
+	top_left_position.y = pos.y
+
 func set_rotation_state(state: int):
 	set_rotation_degrees(90 * state)
+
+func tween_rotation_state(state: int):
+	var new_rotation = rotate_toward(rotation, PI / 2.0 * state, 2 * PI)
+	var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, 'rotation', new_rotation, 0.7)
 
 func get_bounds() -> Vector4:
 	var bounds := config.tile_size * TetrisShape.new(type).get_actual_bounds()
