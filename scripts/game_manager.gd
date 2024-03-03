@@ -26,6 +26,7 @@ var _is_running := false
 var _grid_manager: GridManager = null
 var _time_elapsed := 0.0
 var _input_time_elapsed := -fast_move_delay
+@onready var _particles: GPUParticles2D = $GPUParticles2D
 
 func _ready():
 	restart()
@@ -91,6 +92,8 @@ func _process(delta):
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
 			if filled_rows:
+				_particles.position.y = (filled_rows[0] + 1) * 39
+				_particles.emitting = true
 				AudioManager.row_sfx.play()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()

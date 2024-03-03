@@ -1,9 +1,31 @@
-[gd_scene load_steps=5 format=3 uid="uid://cj0a6y04one60"]
+[gd_scene load_steps=8 format=3 uid="uid://cj0a6y04one60"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_n0sj3"]
 [ext_resource type="Script" path="res://scripts/grid_visualizer.gd" id="2_3x2fm"]
 [ext_resource type="Script" path="res://scenes/shape_previews/preview_box.gd" id="3_02mcv"]
 [ext_resource type="Script" path="res://scenes/FPSLabel.gd" id="4_d2a0j"]
+
+[sub_resource type="Curve" id="Curve_wmors"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.501484, 0.992415), -0.0639, -0.0639, 0, 0, Vector2(0.804154, 0.302217), -4.47302, -4.47302, 0, 0, Vector2(1, 0), -0.0481513, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_bahle"]
+curve = SubResource("Curve_wmors")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c57vl"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(195, 5, 1)
+spread = 180.0
+flatness = 0.97
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 5.0
+alpha_curve = SubResource("CurveTexture_bahle")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -11,6 +33,16 @@
 script = ExtResource("1_n0sj3")
 grid_visualuzer = NodePath("../GridVisualizer")
 side_move_speed = 10
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="GameManager"]
+position = Vector2(195, 758)
+emitting = false
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_c57vl")
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+trail_lifetime = 0.1
 
 [node name="GridVisualizer" type="Node2D" parent="."]
 script = ExtResource("2_3x2fm")
