@@ -3,6 +3,41 @@ class_name GridVisualizer
 extends Node2D
 
 @export var config: GridConfig = preload("res://resources/grid_config.tres")
+
+var current_shape: ShapePreview
+var fall_preview: ShapePreview
+
+func set_current_shape_rotation(rotation_state: int):
+	current_shape.tween_rotation_state(rotation_state)
+	
+func set_fall_preview_rotation(rotation_state: int):
+	fall_preview.set_rotation_state(rotation_state)
+	
+func set_current_shape(type: TetrisShape.Type, row: int, col: int):
+	if current_shape:
+		remove_child(current_shape)
+	current_shape = ShapePreview.new(type)
+	current_shape.update_shape()
+	current_shape.top_left_position = config.tile_size * Vector2(col, row)
+	add_child(current_shape)
+	
+	if fall_preview:
+		remove_child(fall_preview)
+	fall_preview = ShapePreview.new(type)
+	var color := Color.WHITE
+	color.a = config.fall_preview_alpha
+	fall_preview.modulate = color
+	fall_preview.update_shape()
+	add_child(fall_preview)
+	
+func set_current_shape_position(row: int, col: int):
+	current_shape.top_left_position = config.tile_size * Vector2(col, row)
+	
+func tween_current_shape_position(row: int, col: int):
+	current_shape.tween_top_left_position(config.tile_size * Vector2(col, row))
+	
+func set_fall_preview_position(row: int, col: int):
+	fall_preview.top_left_position = config.tile_size * Vector2(col, row)
 	
 func update_grid(new_grid: Array[Array]):
 	var height := new_grid.size()
@@ -17,7 +52,7 @@ func update_grid(new_grid: Array[Array]):
 	
 	var background: Sprite2D = get_child(0)
 	background.modulate = config.background_color
-	background.scale = config.tile_size * Vector2i(width, height)
+	background.scale = config.tile_size * Vector2(width, height)
 	
 	for row in range(height):
 		for col in range(width):
@@ -28,8 +63,8 @@ func update_grid(new_grid: Array[Array]):
 			var x: float = col * config.tile_size + config.tile_margin
 			var y: float = row * config.tile_size + config.tile_margin
 			tiles[index].modulate = color
-			tiles[index].position = Vector2i(x, y)
-			tiles[index].scale = Vector2i(size, size)
+			tiles[index].position = Vector2(x, y)
+			tiles[index].scale = Vector2(size, size)
 			
 func create_grid(width: int, height: int):
 	var children := get_children()

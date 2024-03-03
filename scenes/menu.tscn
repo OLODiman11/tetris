@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cgde7oxtli4rd"]
+[gd_scene load_steps=10 format=3 uid="uid://hfdy01nka57o"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_cve0i"]
 [ext_resource type="Texture2D" uid="uid://lku1ty0hvtvv" path="res://assets/pictures/tetris-background.png" id="2_ycwoo"]

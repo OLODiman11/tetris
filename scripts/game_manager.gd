@@ -15,6 +15,8 @@ signal new_shape_placed(Array)
 @export var grid_visualuzer: GridVisualizer = null
 @export var fast_move_delay := 0.15
 @export var side_move_speed := 7
+@export var particles: Node2D
+@export var config: GridConfig = preload("res://resources/grid_config.tres")
 
 var shape_list: Array[TetrisShape.Type]
 var score: int = 0:
@@ -37,10 +39,10 @@ func _input(event):
 	if not is_running():
 		return
 	
-	var should_redraw := false	
+	var should_redraw := false
 	if event.is_action_pressed("rotate"):
 		if _try_rotate_shape():
-			should_redraw = true 
+			should_redraw = true
 	
 	if event.is_action_pressed("move_right"):
 		_input_time_elapsed = -fast_move_delay
@@ -55,7 +57,7 @@ func _input(event):
 			
 
 	if should_redraw:
-		redraw_grid()
+		tween_current_shape()
 		
 func _process(delta):
 	if not is_running():
@@ -68,7 +70,7 @@ func _process(delta):
 	if _input_time_elapsed >= sec_per_side_move:
 		_input_time_elapsed = fmod(_input_time_elapsed, sec_per_side_move)
 		if Input.is_action_pressed("move_right"):
-			moved = moved || _try_move_right() 
+			moved = moved || _try_move_right()
 		if Input.is_action_pressed("move_left"):
 			moved = moved || _try_move_left()
 	
@@ -91,6 +93,11 @@ func _process(delta):
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
 			if filled_rows:
+				particles.position.y = (filled_rows[0]) * 39 + 19.5
+				for i in _grid_manager.get_width():
+					var child = particles.get_child(i)
+					child.modulate = config.colors[_grid_manager.get_grid()[filled_rows[0]][i]]
+					child.emitting = true
 				AudioManager.row_sfx.play()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()
@@ -99,9 +106,12 @@ func _process(delta):
 				_game_end()
 				AudioManager.youmoose_sfx.play()
 				get_tree().change_scene_to_file("res://scenes/loose_menu.tscn")
+			
+			redraw_grid()
+			set_current_shape()
 	
 	if moved:
-		redraw_grid()
+		update_current_shape()
 		
 	if Input.is_action_pressed("key_exit"):
 		_game_end()
@@ -115,10 +125,37 @@ func restart():
 	populate_shape_list(3)
 	try_place_next_shape()
 	redraw_grid()
+	set_current_shape()
 	grid_visualuzer.show()
 	AudioManager.background_music.play()
 	AudioManager.youmoose_sfx.stop()
 	
+func set_current_shape():
+	var shape_type := _grid_manager.current_shape.type
+	var row := _grid_manager.s_row
+	var col := _grid_manager.s_col
+	grid_visualuzer.set_current_shape(shape_type, row, col)
+	update_current_shape()
+	
+func update_current_shape():
+	var row := _grid_manager.s_row
+	var col := _grid_manager.s_col
+	var rotation_state := _grid_manager.current_shape.get_rotation_state()
+	grid_visualuzer.set_current_shape_position(row, col)
+	#grid_visualuzer.set_current_shape_rotation(rotation_state)
+	var p_row := _grid_manager.p_row
+	grid_visualuzer.set_fall_preview_position(p_row, col)
+	grid_visualuzer.set_fall_preview_rotation(rotation_state)
+	
+func tween_current_shape():
+	var row := _grid_manager.s_row
+	var col := _grid_manager.s_col
+	var rotation_state := _grid_manager.current_shape.get_rotation_state()
+	grid_visualuzer.tween_current_shape_position(row, col)
+	grid_visualuzer.set_current_shape_rotation(rotation_state)
+	var p_row := _grid_manager.p_row
+	grid_visualuzer.set_fall_preview_position(p_row, col)
+	grid_visualuzer.set_fall_preview_rotation(rotation_state)
 	
 func populate_shape_list(size: int):
 	shape_list = []
@@ -143,7 +180,7 @@ func is_running():
 	return _is_running
 	
 func redraw_grid():
-	grid_visualuzer.update_grid(_grid_manager.get_whole_grid())
+	grid_visualuzer.update_grid(_grid_manager.get_grid())
 	
 func _try_move_left():
 	if _grid_manager.try_move_left():
