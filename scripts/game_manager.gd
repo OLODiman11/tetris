@@ -15,6 +15,8 @@ signal new_shape_placed(Array)
 @export var grid_visualuzer: GridVisualizer = null
 @export var fast_move_delay := 0.15
 @export var side_move_speed := 7
+@export var particles: Node2D
+@export var config: GridConfig = preload("res://resources/grid_config.tres")
 
 var shape_list: Array[TetrisShape.Type]
 var score: int = 0:
@@ -26,7 +28,6 @@ var _is_running := false
 var _grid_manager: GridManager = null
 var _time_elapsed := 0.0
 var _input_time_elapsed := -fast_move_delay
-@onready var _particles: GPUParticles2D = $GPUParticles2D
 
 func _ready():
 	restart()
@@ -92,8 +93,11 @@ func _process(delta):
 			_grid_manager.stick_shape_to_grid()
 			var filled_rows = _grid_manager.get_filled_rows()
 			if filled_rows:
-				_particles.position.y = (filled_rows[0] + 1) * 39
-				_particles.emitting = true
+				particles.position.y = (filled_rows[0]) * 39 + 19.5
+				for i in _grid_manager.get_width():
+					var child = particles.get_child(i)
+					child.modulate = config.colors[_grid_manager.get_grid()[filled_rows[0]][i]]
+					child.emitting = true
 				AudioManager.row_sfx.play()
 			score += filled_rows.size() * scores_per_row
 			_grid_manager.clean_up_filled_rows()
