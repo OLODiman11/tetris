@@ -27,6 +27,8 @@ AudioManager="*res://scenes/audio_manager.tscn"
 
 window/size/viewport_width=640
 window/size/viewport_height=860
+window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [editor_plugins]
 
@@ -76,3 +78,4 @@ locale/translations=PackedStringArray("res://assets/language_pack/languages.en.t
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
